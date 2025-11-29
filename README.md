@@ -1,40 +1,72 @@
-ButterCut.ai Full Stack Assignment
+VividCut - Mobile Video Editor
 
-This repository contains a full-stack video editing application built with React Native (Expo) and FastAPI (Python).
+VividCut is a high-performance mobile video editing application built with React Native (Expo) and FastAPI. It allows users to overlay text and images on videos, apply filters, customize fonts, and render the final output using FFmpeg.
 
-📂 Project Structure
+✨ Features
 
-backend/: FastAPI server for video rendering.
+Video Editing: Upload a source video and overlay multiple elements.
 
-frontend/: React Native Expo app for the UI.
+Text Overlays:
 
-🚀 Prerequisites
+Custom Fonts (Impact, Arial, Courier, Georgia, Verdana).
 
-Python 3.9+
+Color Selection (Mint, White, Gold, etc.).
 
-Node.js & npm
+Drag to move, pinch/buttons to scale.
 
-FFmpeg: Must be installed and available in your system PATH.
+Tap to edit text content.
 
-Mac: brew install ffmpeg
+Image Overlays:
 
-Windows: Download from ffmpeg.org and add bin folder to Path.
+Upload images from gallery.
 
-Linux: sudo apt install ffmpeg
+Apply filters (Grayscale, Sepia, Invert).
 
-🐍 Backend Setup
+System-native cropping and editing before upload.
+
+Real-time Controls:
+
+Timeline editing (Start/End times).
+
+Delete individual overlays or the main video.
+
+Rendering Engine:
+
+FastAPI backend using FFmpeg for frame-accurate rendering.
+
+Background task processing.
+
+Auto-download of the final result.
+
+🛠️ Prerequisites
+
+Node.js & npm (For Frontend).
+
+Python 3.9+ (For Backend).
+
+FFmpeg:
+
+Windows: Download build from gyan.dev, extract, and add bin folder to System PATH.
+
+Mac: brew install ffmpeg.
+
+Expo Go App: Installed on your physical Android/iOS device.
+
+🚀 Backend Setup (FastAPI)
 
 Navigate to the backend folder:
 
 cd backend
 
 
-Create a virtual environment and activate it:
+Create and activate virtual environment:
 
+# Windows
 python -m venv venv
-# Windows:
 venv\Scripts\activate
-# Mac/Linux:
+
+# Mac/Linux
+python3 -m venv venv
 source venv/bin/activate
 
 
@@ -43,77 +75,67 @@ Install dependencies:
 pip install fastapi uvicorn python-multipart
 
 
-(Note: No other heavy dependencies required, we use subprocess to call ffmpeg directly)
+Start the Server:
 
-Run the server:
-
-# IMPORTANT: Listen on 0.0.0.0 so your phone/emulator can access it
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 
 📱 Frontend Setup (React Native)
 
-Navigate to the frontend folder (or root):
+Navigate to the frontend folder:
 
-npx create-expo-app frontend
 cd frontend
 
 
-Install required packages:
+Install dependencies:
 
+npm install
 npx expo install expo-image-picker expo-av
 
 
-Update API URL:
-Open App.js and find the line:
+Configure IP Address:
 
-const API_URL = '[http://192.168.1.](http://192.168.1.)XX:8000';
+Find your computer's local IP address (ipconfig on Windows, ifconfig on Mac).
+
+Note: If using a Mobile Hotspot, look for the adapter usually named "Local Area Connection* X" (often 192.168.137.1).
+
+Open frontend/App.js and update line 11:
+
+const API_URL = 'http://YOUR_IP_ADDRESS:8000';
 
 
-Replace 192.168.1.XX with your computer's local IP address.
-
-Windows: Run ipconfig in terminal.
-
-Mac/Linux: Run ifconfig in terminal.
-
-Replace App.js content:
-Copy the code provided in the assignment frontend/App.js into your project's App.js.
-
-Run the app:
+Start the App:
 
 npx expo start
 
 
-Scan the QR code with your phone (Expo Go app) or press a for Android Emulator / i for iOS Simulator.
+Scan the QR code with the Expo Go app on your phone.
 
-🎥 Usage Guide
+⚠️ Troubleshooting Connection Issues
 
-Select Video: Tap the black box to choose a video from your library.
+If your phone says "Network Request Failed" or "Upload Failed":
 
-Add Overlays: Click "+ Add Text" or "+ Add Image".
+Firewall (Most Common):
 
-Edit:
+Open "Allow an app through Windows Firewall".
 
-Drag: Drag the overlay on the video preview to position it.
+Find python.exe (or main).
 
-Timing: Edit the Start/End time inputs in the list below.
+Ensure BOTH "Private" and "Public" checkboxes are checked.
 
-Content: Edit text content in the input field.
+Same Network: Ensure your phone and laptop are on the exact same Wi-Fi network (or phone is connected to Laptop's hotspot).
 
-Render: Click "Render Video".
+Correct IP: Double-check ipconfig to ensure your IP hasn't changed.
 
-The app will upload the video and assets.
+🎨 Project Structure
 
-It will poll for status.
-
-Once done, a "Download Result" button will appear.
-
-✅ Evaluation Criteria Met
-
-Functionality: End-to-end flow (Upload -> Edit -> Metadata -> Render -> Status -> Result).
-
-Backend: Async processing using FastAPI BackgroundTasks; dynamic FFmpeg command generation.
-
-UI/UX: Simple, intuitive editor with preview and timing controls.
-
-Code Quality: Modularized functions, clean state management.
+VividCut/
+├── backend/
+│   ├── main.py           # FastAPI Server & FFmpeg Logic
+│   ├── uploads/          # Temp storage for uploaded assets
+│   └── outputs/          # Storage for rendered videos
+│
+└── frontend/
+    ├── App.js            # Main React Native Application
+    ├── assets/           # Icons and splash screens
+    └── package.json      # JS Dependencies
